@@ -301,7 +301,9 @@ class SettingsDialog(tk.Frame):
             current_name = user_data_list[user_selected_index][0]
             del user_data_list[user_selected_index]
             t = (current_name, email)
-            if user_data_list[0][0] == "NoData":
+            if len(user_data_list) == 0:
+                user_data_list = []
+            elif user_data_list[0][0] == "NoData":
                 user_data_list = []
             user_data_list.append(t)
 
@@ -313,8 +315,7 @@ class SettingsDialog(tk.Frame):
     # ********************************************************************************************************
     # * Find the email address in the currently selected user configuration data
     # ********************************************************************************************************
-    @staticmethod
-    def get_email_index():
+    def get_email_index(self):
         email_index = -1
         for i in range(len(rebate_user_data[user_selected_index])):
             if data_labels[i].get().upper() == ('EMAIL'):
