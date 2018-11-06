@@ -113,7 +113,6 @@ class URLSettingsDialog(tk.Frame):
     # ********************************************************************************************************
     # * Destroy the dialog. Call the routine to update the data.
     # ********************************************************************************************************
-    @staticmethod
     def URLreturn_ok(event=None):
         # ********************************************************************************************************
         # * Need event=None because clicking the button does not send a parm, but return key does
