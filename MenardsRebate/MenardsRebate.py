@@ -38,7 +38,8 @@ if root_logger.disabled == False:
     logging.debug('Start of ' + file_name + ' function' + " Called from: " + called_from.__module__)
 
 options = webdriver.ChromeOptions()
-options.binary_location = findfqpath.find_fq_path(find_file='opera.exe', num_days_valid=1)
+options.binary_location = findfqpath.find_fq_path(find_file='iexplore.exe', num_days_valid=1)
+#options.binary_location = findfqpath.find_fq_path(find_file='opera.exe', num_days_valid=1)
 
 #rebateList = [4468, 4478, 4488]
 

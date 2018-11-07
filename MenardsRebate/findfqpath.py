@@ -65,13 +65,7 @@ def find_fq_path(find_file, num_days_valid, scope="Shared"):
         find_file_path_shelf: DbfilenameShelf = shelve.open(shelf_nm)
 
     # ********************************************************************************************************
-    # * Initialize the search variables
-    # * The root path will be used the first time through
-    # ********************************************************************************************************
-    search_from_path = 'c:' + os.sep
-    drive, rest = os.path.splitdrive(search_from_path)
-    # ********************************************************************************************************
-    # * Get the fully qualified path of the file and the date it was stored
+    # * Get the fully qualified path of the file and the date it was stored (if it's there)
     # ********************************************************************************************************
     if pathkey in find_file_path_shelf:
         curr_find_file_path = find_file_path_shelf[pathkey]
@@ -95,19 +89,28 @@ def find_fq_path(find_file, num_days_valid, scope="Shared"):
             drive, rest = os.path.splitdrive(path_parts1[0])
             search_from_path = path_parts2[0]
 
+
+    # ********************************************************************************************************
+    # * Initialize the search variables
+    # * The Program Files path, then the root path will be used if the shelf file is empty (first time)
+    # ********************************************************************************************************
+    search_from_path = os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"))
+
+    drive, rest = os.path.splitdrive(search_from_path)
+
     # ********************************************************************************************************
     # * Set the wildcard node in the path and append the file name
     # ********************************************************************************************************
-    search_path = os.path.join(search_from_path, '**')
+    search_path = os.path.join(search_from_path+'*', '**')
     search_path = os.path.join(search_path, find_file)
 
     # ********************************************************************************************************
     # * This loop will search through directories progressively upwards as needed
     # ********************************************************************************************************
-    nodes_to_check = True
     root_search = os.path.join(drive + os.sep, '**')  # Used to know when to give up
     root_search = os.path.join(root_search, find_file)
     logging.debug('Root search is %s: ', root_search)
+    nodes_to_check = True
     while nodes_to_check:
         logging.debug('About to search for file %s in: %s', find_file, search_path)
         found_file_list = glob.glob(search_path, recursive=True)
